@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 abstract class AbstractListInteger{
   private int[] initialList;
 
@@ -32,9 +34,7 @@ class IntegerArrayList extends AbstractListInteger{
   private int size = data.length; // 配列サイズ
   private int pos = -1; // 値が入っている最後のインデックス。何も入っていない場合は-1。
 
-  public IntegerArrayList(){
-    super();
-  }
+  public IntegerArrayList(){}
 
   public IntegerArrayList(int[] arr){
     super(arr);
@@ -45,9 +45,6 @@ class IntegerArrayList extends AbstractListInteger{
     if (initialData.length > this.size) {
       this.data = new int[initialData.length * 2];
       this.size = data.length;
-      for (int i = 0; i < initialData.length; i++) {
-        this.data[i] = initialData[i];
-      }
     } 
       
     for (int i = 0; i < initialData.length; i++) {
@@ -81,6 +78,8 @@ class IntegerArrayList extends AbstractListInteger{
     } else {
       this.data[this.pos + 1] = element;
     }
+
+    // 共通の処理
     this.pos += 1;
   }
 
@@ -109,6 +108,7 @@ class IntegerArrayList extends AbstractListInteger{
       }
     }
 
+    // 共通処理
     this.pos += elements.length;
   }
 
@@ -127,7 +127,42 @@ class IntegerArrayList extends AbstractListInteger{
   }
 
   public void addAt(int position, int element){
-    // 
+      // positionが配列のサイズ内であり、かつ値が連続する位置かどうか確認
+      if (position < 0 || this.size - 1 < position || this.pos + 1 < position) {
+        throw new IndexOutOfBoundsException("例外: addAtメソッドで指定されたインデックスの範囲が不正です。");
+      }
+  
+      // 現在の配列に空きがなかったら、配列サイズ２倍にする
+      if (this.size - 1 == this.pos) {
+        int[] newData = new int[this.size * 2];
+  
+        for (int i = 0; i <= this.pos; i++) {
+          newData[i] = this.data[i];
+        }
+  
+        this.data = newData;
+      }
+      
+      // posの次に追加する場合はO(1)で追加可能
+      if (position == this.pos + 1) {
+        this.data[this.pos + 1] = element;
+      // データの移動が必要な場合はO(n)で追加可能
+      } else {
+        int[] buffer = new int[this.pos - position + 1];
+        for (int i = 0; i < buffer.length; i++) {
+          buffer[i] = this.data[position + i];
+        }
+  
+        this.data[position] = element;
+        
+        for (int i = 0; i < buffer.length; i++) {  
+          this.data[position + 1 + i] = buffer[i];
+        } 
+  
+      }
+  
+      // 共通の処理
+      this.pos += 1;
   }
 
   public void addAt(int position, int[] elements){
@@ -152,6 +187,10 @@ class IntegerArrayList extends AbstractListInteger{
 
   public AbstractListInteger subList(int start, int end){
     return this;
+  }
+
+  public void toArray(){
+    System.out.println(Arrays.toString(this.data));
   }
 }
 
@@ -204,16 +243,12 @@ class IntegerLinkedList extends AbstractListInteger{
 
 class Main{
   public static void main(String[] args){
-    IntegerArrayList intArrList = new IntegerArrayList(new int[]{1,2,3,4,5,6,7});
+    IntegerArrayList intArrList = new IntegerArrayList(new int[]{1,2,3,4,5,6,7,8,9});
 
     try {
-      // intArrList.add(8);
-      // intArrList.add(12);
-      // intArrList.add(13);
-
-      intArrList.add(new int[]{11, 12, 13, 14});
-      intArrList.pop();
-      System.out.println(intArrList.get(10));
+      intArrList.addAt(9, 10);
+      intArrList.addAt(5, 0);
+      intArrList.toArray();
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
     }
