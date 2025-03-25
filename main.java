@@ -209,15 +209,48 @@ class IntegerArrayList extends AbstractListInteger{
   }
 
   public int removeAt(int position){
+    if (position < 0 || position > this.pos) {
+      throw new IndexOutOfBoundsException("例外: removeAtメソッドで指定されたインデックスの範囲が不正です。");
+    }
+
+    if (position != this.pos) {
+      int[] buffer = new int[this.pos - position];
+
+      for (int i = 0; i < buffer.length; i++) {
+        this.data[position + i] = this.data[position + 1 + i];
+      }
+    }
+
+    this.pos -= 1;
+    
     return 0;
   }
 
   public void removeAllAt(int start){
+    if (start < 0 || start > this.pos) {
+      throw new IndexOutOfBoundsException("例外: removeAllAtメソッドで指定されたインデックスの範囲が不正です。");
+    }
 
+    this.pos = start - 1;
   }
 
   public void removeAllAt(int start, int end){
+    if (start < 0 || start >= end || end > this.pos) {
+      throw new IndexOutOfBoundsException("例外: removeAllAtメソッドで指定されたインデックスの範囲が不正です。");
+    }
 
+    if (start == 0 && end < this.pos) { 
+      for (int i = 0; i < this.pos - end; i++) {
+        this.data[i] = this.data[end + 1 + i];
+      }
+
+    } else if (start > 0 && end == this.pos) {
+      this.pos = start - 1;
+    } else {
+      for (int i = 0; i < this.pos - end; i++) {
+        this.data[start + i] = this.data[end + 1 + i];
+      }
+    }
   }
 
   public AbstractListInteger subList(int start){
@@ -283,11 +316,10 @@ class IntegerLinkedList extends AbstractListInteger{
 class Main{
   public static void main(String[] args){
     IntegerArrayList intArrList = new IntegerArrayList(new int[]{1,2,3,4,5,6,7,8,9,10});
-    int[] addArr = new int[]{1,2,3};
 
     try {
-      intArrList.addAt(3, addArr);
-      intArrList.toArray();
+
+
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
     }
