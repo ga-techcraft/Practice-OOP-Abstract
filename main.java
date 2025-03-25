@@ -189,7 +189,7 @@ class IntegerArrayList extends AbstractListInteger{
       }
     } else {
       // 途中でデータを追加して、既存データを移動させる
-      // 指定されたposition以降のデータをバッファー二追加する
+      // 指定されたposition以降のデータをバッファーに追加する
       int[] buffer = new int[this.pos - position + 1];
       for (int i = 0; i < buffer.length; i++) {
         buffer[i] = this.data[position + i];
@@ -204,7 +204,11 @@ class IntegerArrayList extends AbstractListInteger{
       for (int i = 0; i < buffer.length; i++) {
         this.data[position + elements.length + i] = buffer[i];
       }
+
     }
+
+    // 共通処理
+    this.pos += elements.length;
 
   }
 
@@ -246,14 +250,18 @@ class IntegerArrayList extends AbstractListInteger{
 
     } else if (start > 0 && end == this.pos) {
       this.pos = start - 1;
+      return;
     } else {
       for (int i = 0; i < this.pos - end; i++) {
         this.data[start + i] = this.data[end + 1 + i];
       }
     }
+
+    this.pos = this.pos - end - 1;
   }
 
   public AbstractListInteger subList(int start){
+    // 
     return this;
   }
 
@@ -262,7 +270,12 @@ class IntegerArrayList extends AbstractListInteger{
   }
 
   public void toArray(){
-    System.out.println(Arrays.toString(this.data));
+    int[] buffer = new int[this.pos + 1];
+    for (int i = 0; i <= this.pos; i++) {
+      buffer[i] = this.data[i];
+    }
+    
+    System.out.println(Arrays.toString(buffer));
   }
 }
 
@@ -318,7 +331,19 @@ class Main{
     IntegerArrayList intArrList = new IntegerArrayList(new int[]{1,2,3,4,5,6,7,8,9,10});
 
     try {
+      
+      intArrList.add(9);
+      intArrList.pop();
+      intArrList.addAt(10, 11);
+      intArrList.addAt(11, new int[]{12,13,14});
+      intArrList.add(15);
+      intArrList.add(new int[]{16,17});
+      intArrList.removeAllAt(15);
+      intArrList.removeAt(14);
+      intArrList.removeAllAt(0, 2);
+      intArrList.addAt(0, new int[]{1,2,3});
 
+      intArrList.toArray();
 
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
