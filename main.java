@@ -274,8 +274,16 @@ class IntegerArrayList extends AbstractListInteger{
   }
 
   public AbstractListInteger subList(int start, int end){
+    if (start < 0 || start >= end || end > this.pos) {
+      throw new IndexOutOfBoundsException("例外: subListメソッドで指定されたインデックスの範囲が不正です。");
+    }
+
+    int[] newData = new int[end - start + 1];
+    for (int i = 0; i < newData.length; i++) {
+      newData[i] = this.data[start + i];
+    }
     
-    return this;
+    return new IntegerArrayList(newData);
   }
 
   public void toArray(){
@@ -354,10 +362,15 @@ class Main{
 
       intArrList.toArray();
 
-      AbstractListInteger newIntArrList = intArrList.subList(0);
+      // AbstractListInteger newIntArrList = intArrList.subList(0);
+      // int[] initialList = newIntArrList.getOriginalList();
+      // System.out.println(Arrays.toString(initialList));
+
+      AbstractListInteger newIntArrList = intArrList.subList(0, 13);
       int[] initialList = newIntArrList.getOriginalList();
       System.out.println(Arrays.toString(initialList));
 
+    
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
     }
