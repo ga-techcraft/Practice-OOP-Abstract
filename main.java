@@ -296,26 +296,121 @@ class IntegerArrayList extends AbstractListInteger{
   }
 }
 
+class Node{
+  public int data;
+  public Node next;
+
+  public Node(int data){
+    this.data = data;
+    this.next = null;
+  }
+}
+
 
 class IntegerLinkedList extends AbstractListInteger{
+  Node head;
+  int size = 0;
+
+  public IntegerLinkedList(){}
+
+  public IntegerLinkedList(int[] arr){
+    super(arr);
+    int[] initialData = this.getOriginalList();
+
+    this.head = new Node(initialData[0]);
+    Node tmp = this.head;
+    for (int i = 1; i < initialData.length; i++) {
+      tmp.next = new Node(initialData[i]);
+      tmp = tmp.next;
+    }
+
+    this.size = arr.length;
+  } 
+
   public int get(int position){
-    return 0;
+    if (position < 0 || position > this.size - 1) throw new IndexOutOfBoundsException("例外: getメソッドで指定されたインデックスの範囲が不正です。");
+
+    Node tmp = this.head;
+    for (int i = 0; i < position; i++) {
+      tmp = tmp.next;
+    }
+
+    return tmp.data;
   }
 
   public void add(int element){
+    Node tmp = this.head;
+    while (tmp.next != null) {
+      tmp = tmp.next;
+    }
+    tmp.next = new Node(element);
 
+    this.size++;
   }
 
   public void add(int[] elements){
+    Node tmp = this.head;
+    while (tmp.next != null) {
+      tmp = tmp.next;
+    }
 
+    for (int i = 0; i < elements.length; i++) {
+      tmp.next = new Node(elements[i]);
+      tmp = tmp.next;
+    }
+
+    this.size += elements.length;
   }
 
   public int pop(){
-    return 0;
+    Node tmp = this.head;
+    
+    // 削除するNodeの一つ前のNodeまで移動する
+    for (int i = 0; i < this.size - 2; i++) {
+      tmp = tmp.next;
+    }
+    
+    int ret = tmp.next.data;
+    tmp.next = null;
+    this.size--;
+
+    return ret;
   }
 
   public void addAt(int position, int element){
+    // 範囲チェック
+    if (position < 0 || position > this.size) throw new IndexOutOfBoundsException("例外: addAtメソッドで指定されたインデックスの範囲が不正です。");
 
+    // 0のケース 先頭に追加するだけ
+    if (position == 0) {
+      Node newNode = new Node(element);
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+
+    // this.sizeのケース 末尾に追加するだけ
+    else if (position == this.size) {
+      Node tmp = this.head;
+      for (int i = 0; i < this.size - 1; i++) {
+        tmp = tmp.next;
+      }
+      tmp.next = new Node(element);
+    }
+
+    // それ以外のケース
+    else {
+      // 追加したいインデックスの前まで移動する
+      Node tmp = this.head;
+      for (int i = 0; i < position - 1; i++) {
+        tmp = tmp.next;
+      }
+      Node buff = tmp.next;
+      tmp.next = new Node(element);
+      tmp.next.next = buff;
+    }
+
+    // 共通処理
+    this.size++;
   }
 
   public void addAt(int position, int[] elements){
@@ -341,36 +436,38 @@ class IntegerLinkedList extends AbstractListInteger{
   public AbstractListInteger subList(int start, int end){
     return this;
   }
+
+  public void toArray(){
+    Node tmp = this.head;
+
+    while(true){
+      System.out.println(tmp.data);
+      if (tmp.next == null) {
+        break;
+      }
+      tmp = tmp.next;
+    }
+  }
 }
 
 class Main{
   public static void main(String[] args){
-    IntegerArrayList intArrList = new IntegerArrayList(new int[]{1,2,3,4,5,6,7,8,9,10});
-
-    try {
-      
-      intArrList.add(9);
-      intArrList.pop();
-      intArrList.addAt(10, 11);
-      intArrList.addAt(11, new int[]{12,13,14});
-      intArrList.add(15);
-      intArrList.add(new int[]{16,17});
-      intArrList.removeAllAt(15);
-      intArrList.removeAt(14);
-      intArrList.removeAllAt(0, 2);
-      intArrList.addAt(0, new int[]{1,2,3});
-
-      intArrList.toArray();
-
-      // AbstractListInteger newIntArrList = intArrList.subList(0);
-      // int[] initialList = newIntArrList.getOriginalList();
-      // System.out.println(Arrays.toString(initialList));
-
-      AbstractListInteger newIntArrList = intArrList.subList(0, 13);
-      int[] initialList = newIntArrList.getOriginalList();
-      System.out.println(Arrays.toString(initialList));
+    // IntegerArrayList intArrayList = new IntegerArrayList(new int[]{1,2,3});
+    IntegerLinkedList intLinkedList = new IntegerLinkedList(new int[]{1,2,3});
 
     
+    try {
+      
+      // System.out.println(intArrayList.get(2));
+      // System.out.println(intLinkedList.get(2));
+      intLinkedList.add(4);
+      intLinkedList.add(new int[]{5,6,7});
+      intLinkedList.pop();
+      intLinkedList.addAt(0, 0);
+      intLinkedList.addAt(7, 7);
+      intLinkedList.addAt(2, 0);;
+
+      intLinkedList.toArray();
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
     }
