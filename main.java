@@ -308,8 +308,8 @@ class Node{
 
 
 class IntegerLinkedList extends AbstractListInteger{
-  Node head;
-  int size = 0;
+  private Node head;
+  private int size = 0;
 
   public IntegerLinkedList(){}
 
@@ -413,8 +413,21 @@ class IntegerLinkedList extends AbstractListInteger{
     this.size++;
   }
 
+  // subList利用できそう
   public void addAt(int position, int[] elements){
+    // positionが0の場合、先頭に追加するだけ
 
+    // positionがthis.sizeの場合、末尾に追加するだけ
+
+    // それ以外の場合
+
+    // if (position == 0) {
+
+    // } else if (position == this.size) {
+
+    // } else {
+
+    // }
   }
 
   public int removeAt(int position){
@@ -430,7 +443,19 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 
   public AbstractListInteger subList(int start){
-    return this;
+    // start位置の確認
+    if (start < 0 || start > this.size) throw new IndexOutOfBoundsException("例外: subListメソッドで指定されたインデックスの範囲が不正です。"); 
+
+    int[] newData = new int[this.size - start];
+    Node tmp = this.head;
+    newData[0] = tmp.data;
+    tmp = tmp.next;
+    for (int i = 1; i < newData.length; i++) {
+      newData[i] = tmp.data;
+      tmp = tmp.next;
+    }
+
+    return new IntegerLinkedList(newData);
   }
 
   public AbstractListInteger subList(int start, int end){
@@ -460,12 +485,15 @@ class Main{
       
       // System.out.println(intArrayList.get(2));
       // System.out.println(intLinkedList.get(2));
-      intLinkedList.add(4);
-      intLinkedList.add(new int[]{5,6,7});
-      intLinkedList.pop();
-      intLinkedList.addAt(0, 0);
-      intLinkedList.addAt(7, 7);
-      intLinkedList.addAt(2, 0);;
+      // intLinkedList.add(4);
+      // intLinkedList.add(new int[]{5,6,7});
+      // intLinkedList.pop();
+      // intLinkedList.addAt(0, 0);
+      // intLinkedList.addAt(7, 7);
+      // intLinkedList.addAt(2, 0);
+
+      IntegerLinkedList newList = (IntegerLinkedList) intLinkedList.subList(2);
+      newList.toArray();
 
       intLinkedList.toArray();
     } catch (Exception e) {
