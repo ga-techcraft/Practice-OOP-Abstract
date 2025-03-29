@@ -308,8 +308,8 @@ class Node{
 
 
 class IntegerLinkedList extends AbstractListInteger{
-  private Node head;
-  private int size = 0;
+  public Node head;
+  public int size = 0;
 
   public IntegerLinkedList(){}
 
@@ -415,19 +415,33 @@ class IntegerLinkedList extends AbstractListInteger{
 
   // subList利用できそう
   public void addAt(int position, int[] elements){
-    // positionが0の場合、先頭に追加するだけ
+    // position位置の確認
+    if (position < 0 || position > this.size)  throw new IndexOutOfBoundsException("例外: addAtメソッドで指定されたインデックスの範囲が不正です。");
+
+    // elementsをsubListの引数に渡して、新しい連結リストを作成
+    IntegerLinkedList newLinkedList = new IntegerLinkedList(elements);
+
+    // positionが0の場合、先頭に追加するだけ  
 
     // positionがthis.sizeの場合、末尾に追加するだけ
 
     // それ以外の場合
 
-    // if (position == 0) {
+    if (position == 0) {
+      Node tmp = newLinkedList.head;
+      // 新しい連結リストの末尾まで移動
+      for (int i = 0; i < newLinkedList.size - 1; i++) {
+        tmp = tmp.next;
+      }
+      // 末尾のnextに既存のheadの参照を入れる
+      tmp.next = this.head;
+      // 既存のheadは新しい連結リストのheadの参照を入れる
+      this.head = newLinkedList.head;
+    } else if (position == this.size) {
+      
+    } else {
 
-    // } else if (position == this.size) {
-
-    // } else {
-
-    // }
+    }
   }
 
   public int removeAt(int position){
@@ -449,7 +463,7 @@ class IntegerLinkedList extends AbstractListInteger{
     int[] newData = new int[this.size - start];
     Node tmp = this.head;
     newData[0] = tmp.data;
-    tmp = tmp.next;
+    tmp = tmp.next; 
     for (int i = 1; i < newData.length; i++) {
       newData[i] = tmp.data;
       tmp = tmp.next;
@@ -459,7 +473,23 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 
   public AbstractListInteger subList(int start, int end){
-    return this;
+    // startとend位置の確認
+    if (start < 0 || start >= end || end > this.size - 1) throw new IndexOutOfBoundsException("例外: subListメソッドで指定されたインデックスの範囲が不正です。"); 
+
+    // newDataの作成
+    int[] newData = new int[end - start + 1];
+
+    // start位置まで移動
+    Node tmp = this.head;
+
+    for (int i = 0; i < newData.length; i++) {
+      if (i >= start) {
+        newData[i] = tmp.data;
+      }
+      tmp = tmp.next;
+    }
+  
+    return new IntegerLinkedList(newData);
   }
 
   public void toArray(){
@@ -492,10 +522,15 @@ class Main{
       // intLinkedList.addAt(7, 7);
       // intLinkedList.addAt(2, 0);
 
-      IntegerLinkedList newList = (IntegerLinkedList) intLinkedList.subList(2);
-      newList.toArray();
+      // IntegerLinkedList newList1 = (IntegerLinkedList) intLinkedList.subList(-1, 1);
+      // IntegerLinkedList newList2 = (IntegerLinkedList) intLinkedList.subList(1, 3);
+      // IntegerLinkedList newList3 = (IntegerLinkedList) intLinkedList.subList(0, 1);
+      // newList3.toArray();
 
+      intLinkedList.addAt(0, new int[]{-1,0});
       intLinkedList.toArray();
+
+      // intLinkedList.toArray();
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
     }
