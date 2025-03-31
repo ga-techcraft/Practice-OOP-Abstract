@@ -457,6 +457,36 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 
   public int removeAt(int position){
+    // 検証
+    // 0 < position || position > this.size - 1 はNG
+    if (0 > position || position > this.size - 1) throw new IndexOutOfBoundsException("例外: removeAtメソッドで指定されたインデックスの範囲が不正です。");
+
+    // positionが0だったら
+    // this.head = this.head.next;
+    if (position == 0) {
+      this.head = this.head.next;
+    }
+
+    // positionがthis.size - 1だったら
+    // 末尾の前まで移動。そのnextをnullに
+    else if (position == this.size - 1) {
+      Node tmp = this.head;
+      for (int i = 1; i < this.size - 1; i++) {
+        tmp = tmp.next;
+      }
+      tmp.next = null;
+    }
+
+    // それ以外だったら
+    // positionの前まで移動。その次の次の参照をいれる
+    else {
+      Node tmp = this.head;
+      for (int i = 1; i <= position - 1; i ++) {
+        tmp = tmp.next;
+      }
+      tmp.next = tmp.next.next;
+    }
+
     return 0;
   }
 
@@ -539,7 +569,7 @@ class Main{
       // IntegerLinkedList newList3 = (IntegerLinkedList) intLinkedList.subList(0, 1);
       // newList3.toArray();
 
-      intLinkedList.addAt(1, new int[]{4,5});
+      intLinkedList.removeAt(1);
       intLinkedList.toArray();
 
       // intLinkedList.toArray();
