@@ -422,25 +422,37 @@ class IntegerLinkedList extends AbstractListInteger{
     IntegerLinkedList newLinkedList = new IntegerLinkedList(elements);
 
     // positionが0の場合、先頭に追加するだけ  
-
-    // positionがthis.sizeの場合、末尾に追加するだけ
-
-    // それ以外の場合
-
     if (position == 0) {
       Node tmp = newLinkedList.head;
-      // 新しい連結リストの末尾まで移動
       for (int i = 0; i < newLinkedList.size - 1; i++) {
         tmp = tmp.next;
       }
-      // 末尾のnextに既存のheadの参照を入れる
       tmp.next = this.head;
-      // 既存のheadは新しい連結リストのheadの参照を入れる
       this.head = newLinkedList.head;
-    } else if (position == this.size) {
       
+      // positionがthis.sizeの場合、末尾に追加するだけ
+    } else if (position == this.size) {
+      Node tmp = this.head;
+      for (int i = 0; i < this.size - 1; i++) {
+        tmp = tmp.next;
+      }
+      tmp.next = newLinkedList.head;
+    
+      // それ以外の場合
     } else {
+      Node tmp = this.head;
+      for (int i = 0; i <= position - 2; i++) {
+        tmp = tmp.next;
+      }
+      Node tmp2 = tmp.next;
 
+      tmp.next = newLinkedList.head;
+
+      Node tmp3 = newLinkedList.head;
+      for (int i = 0; i < newLinkedList.size - 1; i++) {
+        tmp3 = tmp3.next;
+      }
+      tmp3.next = tmp2;
     }
   }
 
@@ -527,7 +539,7 @@ class Main{
       // IntegerLinkedList newList3 = (IntegerLinkedList) intLinkedList.subList(0, 1);
       // newList3.toArray();
 
-      intLinkedList.addAt(0, new int[]{-1,0});
+      intLinkedList.addAt(1, new int[]{4,5});
       intLinkedList.toArray();
 
       // intLinkedList.toArray();
