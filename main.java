@@ -491,11 +491,62 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 
   public void removeAllAt(int start){
+    // インデックスの検証
+    if (start < 0 || start > this.size - 1) throw new IndexOutOfBoundsException("例外: removeAllAtメソッドで指定されたインデックスの範囲が不正です。");
+
+    if (start == 0) {
+      this.head = null;
+      return; 
+    }
+
+    // 削除したいインデックスの前まで移動し、その要素のnextをnullにする
+    Node tmp = this.head;
+    for (int i = 1; i <= start - 1; i++) {
+      tmp = tmp.next;
+    }
+    tmp.next = null;
 
   }
 
   public void removeAllAt(int start, int end){
+    // indexの検証
+    if (start < 0 || start >= end || end > this.size - 1) throw new IndexOutOfBoundsException("例外: removeAllAtメソッドで指定されたインデックスの範囲が不正です。");
 
+    // start == 0
+    // endまで移動して、そのnextをheadにする
+    if (start == 0) {
+      for (int i = 1; i <= end + 1; i++) {
+        this.head = this.head.next;
+      }
+    }
+
+    // end == this.size - 1
+    // startの前まで移動して、そのnextをnullにする
+    else if (end == this.size - 1) {
+      Node tmp = this.head;
+      for (int i = 1; i <= start - 1; i++) {
+        tmp = tmp.next;
+      }
+      tmp.next = null;
+    }
+
+    // 上記以外
+    // startの前の要素のnextを、endの要素のnextにする
+    else {
+      Node tmp = this.head;
+      for (int i = 1; i <= start - 1; i++) {
+        tmp = tmp.next;
+      }
+
+      Node buffer = tmp;
+
+      for (int i = start; i <= end; i++) {
+        tmp = tmp.next;
+      }
+
+      buffer.next = tmp.next;
+      
+    }
   }
 
   public AbstractListInteger subList(int start){
@@ -535,6 +586,10 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 
   public void toArray(){
+    if (this.head == null) {
+      System.out.println(this.head);
+      return;
+    } 
     Node tmp = this.head;
 
     while(true){
@@ -550,7 +605,7 @@ class IntegerLinkedList extends AbstractListInteger{
 class Main{
   public static void main(String[] args){
     // IntegerArrayList intArrayList = new IntegerArrayList(new int[]{1,2,3});
-    IntegerLinkedList intLinkedList = new IntegerLinkedList(new int[]{1,2,3});
+    IntegerLinkedList intLinkedList = new IntegerLinkedList(new int[]{1,2,3,4,5,6});
 
     
     try {
@@ -569,7 +624,9 @@ class Main{
       // IntegerLinkedList newList3 = (IntegerLinkedList) intLinkedList.subList(0, 1);
       // newList3.toArray();
 
-      intLinkedList.removeAt(1);
+      // intLinkedList.removeAllAt(0, 2); // 4,5,6になるはず
+      // intLinkedList.removeAllAt(2, 5); // 1,2になるはず
+      intLinkedList.removeAllAt(2, 4); // 1,2,6になるはず
       intLinkedList.toArray();
 
       // intLinkedList.toArray();
