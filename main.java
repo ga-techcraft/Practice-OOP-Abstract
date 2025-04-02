@@ -602,10 +602,16 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 }
 
+
 class Main{
+
+  public static void add(AbstractListInteger list, int element){
+    list.add(element);
+  }
+
   public static void main(String[] args){
-    // IntegerArrayList intArrayList = new IntegerArrayList(new int[]{1,2,3});
-    IntegerLinkedList intLinkedList = new IntegerLinkedList(new int[]{1,2,3,4,5,6});
+    IntegerArrayList intArrayList = new IntegerArrayList(new int[]{1,2,3});
+    IntegerLinkedList intLinkedList = new IntegerLinkedList(new int[]{1,2,3});
 
     
     try {
@@ -626,7 +632,10 @@ class Main{
 
       // intLinkedList.removeAllAt(0, 2); // 4,5,6になるはず
       // intLinkedList.removeAllAt(2, 5); // 1,2になるはず
-      intLinkedList.removeAllAt(2, 4); // 1,2,6になるはず
+      // intLinkedList.removeAllAt(2, 4); // 1,2,6になるはず
+      add(intArrayList, 4);
+      add(intLinkedList, 4);
+      intArrayList.toArray();
       intLinkedList.toArray();
 
       // intLinkedList.toArray();
