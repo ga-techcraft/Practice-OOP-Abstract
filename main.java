@@ -306,7 +306,7 @@ class Node{
   }
 }
 
-class IntegerLinkedList extends AbstractListInteger{
+class IntegerLinkedList extends AbstractListInteger implements Deque{
   public Node head;
   public int size = 0;
 
@@ -599,6 +599,28 @@ class IntegerLinkedList extends AbstractListInteger{
       tmp = tmp.next;
     }
   }
+
+  public int peekLast(){
+    return this.get(this.size - 1);
+  }
+
+  public int peekFirst(){
+    return this.get(0);
+  }
+
+  public int poll(){
+    int tmp = this.get(0);
+    this.removeAt(0);
+    return tmp;
+  }
+
+  public void push(int value){
+    this.add(value);
+  }
+
+  public void addFirst(int vaule){
+    this.addAt(vaule, 0);
+  }
 }
 
 interface Stack{
@@ -629,7 +651,12 @@ class Main{
 
     
     try {
-      
+      // System.out.println(intLinkedList.peekLast());
+      // System.out.println(intLinkedList.peekFirst());
+      System.out.println(intLinkedList.pop());
+      intLinkedList.push(3);
+      intLinkedList.addFirst(0);
+      intLinkedList.toArray();
       // System.out.println(intArrayList.get(2));
       // System.out.println(intLinkedList.get(2));
       // intLinkedList.add(4);
@@ -647,10 +674,10 @@ class Main{
       // intLinkedList.removeAllAt(0, 2); // 4,5,6になるはず
       // intLinkedList.removeAllAt(2, 5); // 1,2になるはず
       // intLinkedList.removeAllAt(2, 4); // 1,2,6になるはず
-      add(intArrayList, 4);
-      add(intLinkedList, 4);
-      intArrayList.toArray();
-      intLinkedList.toArray();
+      // add(intArrayList, 4);
+      // add(intLinkedList, 4);
+      // intArrayList.toArray();
+      // intLinkedList.toArray();
 
       // intLinkedList.toArray();
     } catch (Exception e) {
