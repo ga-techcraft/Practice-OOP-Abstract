@@ -306,7 +306,6 @@ class Node{
   }
 }
 
-
 class IntegerLinkedList extends AbstractListInteger{
   public Node head;
   public int size = 0;
@@ -602,6 +601,21 @@ class IntegerLinkedList extends AbstractListInteger{
   }
 }
 
+interface Stack{
+  int peekLast(); // 最後の要素を取得
+  int pop(); // 最後の要素を削除して返す
+  void push(int value); // 最後に要素を追加
+}
+
+interface Queue{
+  int peekFirst(); // 最初の要素を取得
+  int poll(); // 最初の要素を削除して返す
+  void push(int value); // 最後に要素を追加
+}
+
+interface Deque extends Stack, Queue{
+  void addFirst(int value); // 最初に要素を追加
+}
 
 class Main{
 
