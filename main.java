@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 
 abstract class AbstractListInteger{
   private int[] initialList;
@@ -327,6 +329,7 @@ class IntegerLinkedList extends AbstractListInteger implements Deque{
   } 
 
   public int get(int position){
+    if (this.size == 0) throw new NoSuchElementException("例外: リストが空のため、要素を取得できません。");
     if (position < 0 || position > this.size - 1) throw new IndexOutOfBoundsException("例外: getメソッドで指定されたインデックスの範囲が不正です。");
 
     Node tmp = this.head;
@@ -486,6 +489,8 @@ class IntegerLinkedList extends AbstractListInteger implements Deque{
       tmp.next = tmp.next.next;
     }
 
+    this.size--;
+
     return 0;
   }
 
@@ -639,10 +644,19 @@ interface Deque extends Stack, Queue{
   void addFirst(int value); // 最初に要素を追加
 }
 
+
+
 class Main{
 
-  public static void add(AbstractListInteger list, int element){
-    list.add(element);
+  public static void QueuePrint(Queue q){
+    try {
+      while (true) {
+        System.out.println(q.peekFirst());
+        q.poll();
+      }
+    } catch (NoSuchElementException e) {
+      System.out.println("すべての要素を取得しました！");
+    }
   }
 
   public static void main(String[] args){
@@ -651,12 +665,13 @@ class Main{
 
     
     try {
+      QueuePrint(intLinkedList);
       // System.out.println(intLinkedList.peekLast());
       // System.out.println(intLinkedList.peekFirst());
-      System.out.println(intLinkedList.pop());
-      intLinkedList.push(3);
-      intLinkedList.addFirst(0);
-      intLinkedList.toArray();
+      // System.out.println(intLinkedList.pop());
+      // intLinkedList.push(3);
+      // intLinkedList.addFirst(0);
+      // intLinkedList.toArray();
       // System.out.println(intArrayList.get(2));
       // System.out.println(intLinkedList.get(2));
       // intLinkedList.add(4);
