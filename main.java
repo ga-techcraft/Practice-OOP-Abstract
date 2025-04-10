@@ -287,15 +287,6 @@ class IntegerArrayList extends AbstractListInteger{
     
     return new IntegerArrayList(newData);
   }
-
-  public void toArray(){
-    int[] buffer = new int[this.pos + 1];
-    for (int i = 0; i <= this.pos; i++) {
-      buffer[i] = this.data[i];
-    }
-    
-    System.out.println(Arrays.toString(buffer));
-  }
 }
 
 class Node{
@@ -596,22 +587,6 @@ class IntegerLinkedList extends AbstractListInteger implements Deque{
     return new IntegerLinkedList(newData);
   }
 
-  public void toArray(){
-    if (this.head == null) {
-      System.out.println(this.head);
-      return;
-    } 
-    Node tmp = this.head;
-
-    while(true){
-      System.out.println(tmp.data);
-      if (tmp.next == null) {
-        break;
-      }
-      tmp = tmp.next;
-    }
-  }
-
   public int peekLast(){
     return this.get(this.size - 1);
   }
@@ -686,18 +661,36 @@ class Main{
     }
   }
 
+  // public static void AbstractListIntegerPrint(AbstractListInteger a){
+  //   try {
+  //     while (true) {
+  //       System.out.println(a.get(0));
+  //       a.removeAt(0);
+  //     }
+  //   } catch (NoSuchElementException e) {
+  //     System.out.println("すべての要素を取得しました！");
+  //   }
+  // }
+
   public static void main(String[] args){
     
     Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
     Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
     Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
     IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
+    IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
     
     // QueuePrint(queueList);
     // StackPrint(stackList);
-    DequePrint(dequeList);
+    // DequePrint(dequeList);
+    // AbstractListIntegerPrint(linkedList);
+    // AbstractListIntegerPrint(arraylist);
 
-    
+    // **動的配列で現状posを変えるようにしているが、posを削除してsizeで管理するように修正する。**
+
+    // 学び
+    // 抽象クラスとインターフェースに対する理解を深めることができた。
+    // 
     
     try {
 
