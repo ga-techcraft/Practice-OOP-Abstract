@@ -365,6 +365,7 @@ class IntegerLinkedList extends AbstractListInteger implements Deque{
   }
 
   public int pop(){
+    if (this.size == 0) throw new NoSuchElementException("例外: リストが空のため、要素を取得できません。");
     Node tmp = this.head;
     
     // 削除するNodeの一つ前のNodeまで移動する
@@ -372,7 +373,13 @@ class IntegerLinkedList extends AbstractListInteger implements Deque{
       tmp = tmp.next;
     }
     
-    int ret = tmp.next.data;
+    int ret;
+    if (this.size == 1) {
+      ret = this.head.data;
+    } else {
+      ret = tmp.next.data;
+    }
+
     tmp.next = null;
     this.size--;
 
@@ -651,8 +658,17 @@ class Main{
   public static void QueuePrint(Queue q){
     try {
       while (true) {
-        System.out.println(q.peekFirst());
-        q.poll();
+        System.out.println(q.poll());
+      }
+    } catch (NoSuchElementException e) {
+      System.out.println("すべての要素を取得しました！");
+    }
+  }
+
+  public static void StackPrint(Stack s){
+    try {
+      while (true) {
+        System.out.println(s.pop());
       }
     } catch (NoSuchElementException e) {
       System.out.println("すべての要素を取得しました！");
@@ -660,41 +676,19 @@ class Main{
   }
 
   public static void main(String[] args){
-    IntegerArrayList intArrayList = new IntegerArrayList(new int[]{1,2,3});
-    IntegerLinkedList intLinkedList = new IntegerLinkedList(new int[]{1,2,3});
+    
+    Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
+    Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
+    Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
+    IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
+    
+    // QueuePrint(queueList);
+    StackPrint(stackList);
 
     
+    
     try {
-      QueuePrint(intLinkedList);
-      // System.out.println(intLinkedList.peekLast());
-      // System.out.println(intLinkedList.peekFirst());
-      // System.out.println(intLinkedList.pop());
-      // intLinkedList.push(3);
-      // intLinkedList.addFirst(0);
-      // intLinkedList.toArray();
-      // System.out.println(intArrayList.get(2));
-      // System.out.println(intLinkedList.get(2));
-      // intLinkedList.add(4);
-      // intLinkedList.add(new int[]{5,6,7});
-      // intLinkedList.pop();
-      // intLinkedList.addAt(0, 0);
-      // intLinkedList.addAt(7, 7);
-      // intLinkedList.addAt(2, 0);
 
-      // IntegerLinkedList newList1 = (IntegerLinkedList) intLinkedList.subList(-1, 1);
-      // IntegerLinkedList newList2 = (IntegerLinkedList) intLinkedList.subList(1, 3);
-      // IntegerLinkedList newList3 = (IntegerLinkedList) intLinkedList.subList(0, 1);
-      // newList3.toArray();
-
-      // intLinkedList.removeAllAt(0, 2); // 4,5,6になるはず
-      // intLinkedList.removeAllAt(2, 5); // 1,2になるはず
-      // intLinkedList.removeAllAt(2, 4); // 1,2,6になるはず
-      // add(intArrayList, 4);
-      // add(intLinkedList, 4);
-      // intArrayList.toArray();
-      // intLinkedList.toArray();
-
-      // intLinkedList.toArray();
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
     }
