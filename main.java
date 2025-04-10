@@ -675,6 +675,17 @@ class Main{
     }
   }
 
+  public static void DequePrint(Deque d){
+    try {
+      while (true) {
+        System.out.println(d.poll());
+        System.out.println(d.pop());
+      }
+    } catch (NoSuchElementException e) {
+      System.out.println("すべての要素を取得しました！");
+    }
+  }
+
   public static void main(String[] args){
     
     Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
@@ -683,7 +694,8 @@ class Main{
     IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
     
     // QueuePrint(queueList);
-    StackPrint(stackList);
+    // StackPrint(stackList);
+    DequePrint(dequeList);
 
     
     
