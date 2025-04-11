@@ -33,8 +33,8 @@ abstract class AbstractListInteger{
 
 class IntegerArrayList extends AbstractListInteger{
   private int[] data = new int[10]; 
-  private int size = data.length; // 配列サイズ
-  private int pos = -1; // 値が入っている最後のインデックス。何も入っていない場合は-1。
+  private int size = 0; // 配列サイズ
+  // private int pos = -1; 
 
   public IntegerArrayList(){}
 
@@ -43,21 +43,21 @@ class IntegerArrayList extends AbstractListInteger{
 
     int[] initialData = this.getOriginalList();
 
-    // 配列サイズがデフォルトサイズ（10）より大きかったら、引数の配列サイズの2倍のサイズの配列を作成する。
-    if (initialData.length > this.size) {
+    // 配列サイズがデフォルトで確保された要素数（10）より大きかったら、引数の配列サイズの2倍のサイズの配列を作成する。
+    if (initialData.length > this.data.length) {
       this.data = new int[initialData.length * 2];
-      this.size = data.length;
+      // this.size = data.length;
     } 
       
     for (int i = 0; i < initialData.length; i++) {
         this.data[i] = initialData[i];
     }
 
-    this.pos += arr.length;
+    // this.pos += arr.length;
   }
 
   public int get(int position){
-    if (position < 0 || position > this.pos) {
+    if (position < 0 || this.size <= position) {
       throw new IndexOutOfBoundsException("getメソッドの引数が不正です。");
     }
 
@@ -66,23 +66,24 @@ class IntegerArrayList extends AbstractListInteger{
 
   public void add(int element){
     // 配列の空きがない場合、配列サイズを2倍にする
-    if (this.size == this.pos + 1) {
-      int[] newData = new int[this.size * 2];
+    // if (this.size == this.pos + 1) {
+    if (this.size == this.data.length) {
+      int[] newData = new int[this.data.length * 2];
 
       // 既存のデータを入れる
-      for (int i = 0; i <= this.pos; i++) {
+      for (int i = 0; i < this.size; i++) {
         newData[i] = this.data[i];
       }
-      newData[this.pos + 1] = element;
+      newData[this.size + 1] = element;
 
       this.data = newData;
-      this.size = data.length;
+      // this.size = data.length;
     } else {
-      this.data[this.pos + 1] = element;
+      this.data[this.size] = element;
     }
 
     // 共通の処理
-    this.pos += 1;
+    this.size += 1;
   }
 
   public void add(int[] elements){
@@ -673,12 +674,15 @@ class Main{
   // }
 
   public static void main(String[] args){
+
+    IntegerArrayList arrayList = new IntegerArrayList(new int[]{1,2,3});
+    System.out.println(arrayList);
     
-    Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
-    Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
-    Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
-    IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
-    IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
+    // Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
+    // Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
+    // Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
+    // IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
+    // IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
     
     // QueuePrint(queueList);
     // StackPrint(stackList);
