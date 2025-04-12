@@ -33,8 +33,7 @@ abstract class AbstractListInteger{
 
 class IntegerArrayList extends AbstractListInteger{
   private int[] data = new int[10]; 
-  private int size = 0; // 配列サイズ
-  // private int pos = -1; 
+  private int size = 0; // 配列サイズ（実際にデータが入っている要素数）
 
   public IntegerArrayList(){}
 
@@ -46,14 +45,11 @@ class IntegerArrayList extends AbstractListInteger{
     // 配列サイズがデフォルトで確保された要素数（10）より大きかったら、引数の配列サイズの2倍のサイズの配列を作成する。
     if (initialData.length > this.data.length) {
       this.data = new int[initialData.length * 2];
-      // this.size = data.length;
     } 
       
     for (int i = 0; i < initialData.length; i++) {
         this.data[i] = initialData[i];
     }
-
-    // this.pos += arr.length;
   }
 
   public int get(int position){
@@ -66,7 +62,6 @@ class IntegerArrayList extends AbstractListInteger{
 
   public void add(int element){
     // 配列の空きがない場合、配列サイズを2倍にする
-    // if (this.size == this.pos + 1) {
     if (this.size == this.data.length) {
       int[] newData = new int[this.data.length * 2];
 
@@ -77,7 +72,6 @@ class IntegerArrayList extends AbstractListInteger{
       newData[this.size + 1] = element;
 
       this.data = newData;
-      // this.size = data.length;
     } else {
       this.data[this.size] = element;
     }
@@ -88,17 +82,17 @@ class IntegerArrayList extends AbstractListInteger{
 
   public void add(int[] elements){
     // 配列の空きがない場合、現在の配列サイズに引数の配列サイズを＋する。
-    if (this.size - (this.pos + 1) < elements.length) {
-      int[] newData = new int[this.size + elements.length];
+    if (this.data.length - this.size < elements.length) {
+      int[] newData = new int[this.data.length + elements.length];
 
       // 既存データを入れる
-      for (int i = 0; i <= this.pos; i++) {
+      for (int i = 0; i < this.size; i++) {
         newData[i] = this.data[i];
       }
 
       // 新規データを入れる
       for (int i = 0; i < elements.length; i++) {
-        newData[pos + 1 + i] = elements[i];
+        newData[this.size + i] = elements[i];
       }
 
       this.data = newData;
@@ -107,39 +101,39 @@ class IntegerArrayList extends AbstractListInteger{
     } else {
       // 新規データを入れる
       for (int i = 0; i < elements.length; i++) {
-        this.data[pos + 1 + i] = elements[i];
+        this.data[this.size + i] = elements[i];
       }
     }
 
     // 共通処理
-    this.pos += elements.length;
+    this.size += elements.length;
   }
 
   public int pop() {
-    // 配列にデータがない場合は例外を投げる
-    if (this.pos == -1) {
+    // データがない場合
+    if (this.size == 0) {
       throw new IllegalStateException("例外: データが無いのでpopメソッドは使えません。");
     }
 
-    // posのインデックスの値を削除して、posを-1する
-    int buffer = this.data[this.pos];
-    this.data[this.pos] = 0;
-    this.pos -= 1;
+    // 最後の要素を取得
+    int buffer = this.data[this.size - 1];
+    // データはそのままでサイズを減らす
+    this.size--;
 
     return buffer;
   }
 
   public void addAt(int position, int element){
     // positionが配列のサイズ内であり、かつ値が連続する位置かどうか確認
-    if (position < 0 || this.size - 1 < position || this.pos + 1 < position) {
+    if (position < 0 || (this.data.length - 1) < position || this.size < position) {
       throw new IndexOutOfBoundsException("例外: addAtメソッドで指定されたインデックスの範囲が不正です。");
     }
 
     // 現在の配列に空きがなかったら、配列サイズ２倍にする
-    if (this.size - 1 == this.pos) {
-      int[] newData = new int[this.size * 2];
+    if (this.size == this.data.length) {
+      int[] newData = new int[this.data.length * 2];
 
-      for (int i = 0; i <= this.pos; i++) {
+      for (int i = 0; i < this.size; i++) {
         newData[i] = this.data[i];
       }
 
@@ -147,17 +141,21 @@ class IntegerArrayList extends AbstractListInteger{
     }
     
     // posの次に追加する場合はO(1)で追加可能
-    if (position == this.pos + 1) {
-      this.data[this.pos + 1] = element;
+    if (position == this.size) {
+      this.data[this.size] = element;
+
     // データの移動が必要な場合はO(n)で追加可能
     } else {
-      int[] buffer = new int[this.pos - position + 1];
+      // 以下は移動するデータ
+      int[] buffer = new int[this.size - position];
       for (int i = 0; i < buffer.length; i++) {
         buffer[i] = this.data[position + i];
       }
 
+      // 新規データを格納
       this.data[position] = element;
       
+      // 新規データのあとにbufferデータを格納
       for (int i = 0; i < buffer.length; i++) {  
         this.data[position + 1 + i] = buffer[i];
       } 
@@ -165,35 +163,36 @@ class IntegerArrayList extends AbstractListInteger{
     }
 
     // 共通の処理
-    this.pos += 1;
+    this.size++;
   }
 
   public void addAt(int position, int[] elements){
     // positionが配列のサイズ内であり、かつ値が連続する位置かどうか確認
-    if (position < 0 || this.size - 1 < position || this.pos + 1 < position) {
+    if (position < 0 || this.data.length - this.size < elements.length || this.size < position) {
       throw new IndexOutOfBoundsException("例外: addAtメソッドで指定されたインデックスの範囲が不正です。");
     }
 
     // 現在の配列に空きがなかったら、引数の配列サイズ分を追加する
-    if (this.size - (this.pos + 1) < elements.length) {
-      int[] newData = new int[this.size + elements.length];
+    if (this.data.length - this.size < elements.length) {
+      int[] newData = new int[this.data.length + elements.length];
 
-      for (int i = 0; i <= this.pos; i++) {
+      for (int i = 0; i < this.size; i++) {
         newData[i] = this.data[i];
       }
 
       this.data = newData;
     }
 
-    // posの次からデータを追加する
-    if (position == this.pos + 1) {
+    // posの次からデータを追加する。O(0)で追加可能。
+    if (position == this.size) {
       for (int i = 0; i < elements.length; i++) {
         this.data[position + i] = elements[i];
       }
+    
+    // データの移動が必要な場合
     } else {
-      // 途中でデータを追加して、既存データを移動させる
-      // 指定されたposition以降のデータをバッファーに追加する
-      int[] buffer = new int[this.pos - position + 1];
+      // 以下は移動が必要なデータ
+      int[] buffer = new int[this.size - position];
       for (int i = 0; i < buffer.length; i++) {
         buffer[i] = this.data[position + i];
       }
@@ -211,7 +210,7 @@ class IntegerArrayList extends AbstractListInteger{
     }
 
     // 共通処理
-    this.pos += elements.length;
+    this.size += elements.length;
 
   }
 
