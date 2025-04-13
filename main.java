@@ -50,6 +50,8 @@ class IntegerArrayList extends AbstractListInteger{
     for (int i = 0; i < initialData.length; i++) {
         this.data[i] = initialData[i];
     }
+
+    this.size = arr.length;
   }
 
   public int get(int position){
@@ -225,7 +227,7 @@ class IntegerArrayList extends AbstractListInteger{
     // 末尾を削除する場合は、this.sizeを--するだけだからindexの移動なし
     if (position != this.size - 1) {
       // position以降のデータのindexを1つ減らす。O(n)だけ計算が必要
-      for (int i = position + 1; i < this.size - (position + 1); i++) {
+      for (int i = 0; i < this.size - (position + 1); i++) {
         this.data[position + i] = this.data[position + 1 + i];
       }
     }
@@ -672,28 +674,32 @@ class Main{
 
   public static void main(String[] args){
 
-    IntegerArrayList arrayList = new IntegerArrayList(new int[]{1,2,3});
-    System.out.println(arrayList);
-    
-    // Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
-    // Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
-    // Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
-    // IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
-    // IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
-    
-    // QueuePrint(queueList);
-    // StackPrint(stackList);
-    // DequePrint(dequeList);
-    // AbstractListIntegerPrint(linkedList);
-    // AbstractListIntegerPrint(arraylist);
-
-    // **動的配列で現状posを変えるようにしているが、posを削除してsizeで管理するように修正する。**
-
-    // 学び
-    // 抽象クラスとインターフェースに対する理解を深めることができた。
-    // 
     
     try {
+      
+      IntegerArrayList arrayList = new IntegerArrayList(new int[]{1,2,3,4,5});
+      arrayList.removeAt(2);
+      System.out.println(arrayList.get(2));
+
+      // ---------- removeAllAtのリファクタリングから始める!! --------------
+      
+      // Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
+      // Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
+      // Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
+      // IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
+      // IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
+      
+      // QueuePrint(queueList);
+      // StackPrint(stackList);
+      // DequePrint(dequeList);
+      // AbstractListIntegerPrint(linkedList);
+      // AbstractListIntegerPrint(arraylist);
+  
+      // **動的配列で現状posを変えるようにしているが、posを削除してsizeで管理するように修正する。**
+  
+      // 学び
+      // 抽象クラスとインターフェースに対する理解を深めることができた。
+      // 
 
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
