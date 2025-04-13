@@ -215,29 +215,33 @@ class IntegerArrayList extends AbstractListInteger{
   }
 
   public int removeAt(int position){
-    if (position < 0 || position > this.pos) {
+    if (position < 0 || this.size - 1 < position) {
       throw new IndexOutOfBoundsException("例外: removeAtメソッドで指定されたインデックスの範囲が不正です。");
-    }
+    } 
 
-    if (position != this.pos) {
-      int[] buffer = new int[this.pos - position];
+    // 戻り値のデータをバッファに保存
+    int ret = this.data[position];
 
-      for (int i = 0; i < buffer.length; i++) {
+    // 末尾を削除する場合は、this.sizeを--するだけだからindexの移動なし
+    if (position != this.size - 1) {
+      // position以降のデータのindexを1つ減らす。O(n)だけ計算が必要
+      for (int i = position + 1; i < this.size - (position + 1); i++) {
         this.data[position + i] = this.data[position + 1 + i];
       }
     }
 
-    this.pos -= 1;
-    
-    return 0;
+    this.size--;
+
+    return ret;
   }
 
   public void removeAllAt(int start){
-    if (start < 0 || start > this.pos) {
-      throw new IndexOutOfBoundsException("例外: removeAllAtメソッドで指定されたインデックスの範囲が不正です。");
-    }
+    if (start < 0 || this.size - 1 < start) {
+      throw new IndexOutOfBoundsException("例外: removeAtメソッドで指定されたインデックスの範囲が不正です。");
+    } 
 
-    this.pos = start - 1;
+    // 削除する要素数だけthis.sizeを減らす
+    this.size -= this.size - start;
   }
 
   public void removeAllAt(int start, int end){
@@ -260,6 +264,23 @@ class IntegerArrayList extends AbstractListInteger{
     }
 
     this.pos = this.pos - end - 1;
+
+    // ------
+
+    if (start < 0 || start >= end || this.size - 1 < end) {
+      throw new IndexOutOfBoundsException("例外: removeAllAtメソッドで指定されたインデックスの範囲が不正です。");
+    }
+
+    
+    // end以降のデータをstartから格納する
+    if (end != this.size - 1) {
+      for (int i = end + 1; i < this.size) {
+        
+      }
+    }
+
+    // 削除する要素数だけthis.sizeを減らす
+    this.size -= end - start + 1;
   }
 
   public AbstractListInteger subList(int start){
