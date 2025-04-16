@@ -55,6 +55,8 @@ class IntegerArrayList extends AbstractListInteger{
   }
 
   public int get(int position){
+    if (this.size == 0) throw new NoSuchElementException("例外: リストが空のため、要素を取得できません。");
+    
     if (position < 0 || this.size <= position) {
       throw new IndexOutOfBoundsException("getメソッドの引数が不正です。");
     }
@@ -636,7 +638,7 @@ class Main{
         System.out.println(q.poll());
       }
     } catch (NoSuchElementException e) {
-      System.out.println("すべての要素を取得しました！");
+      System.out.println("すべての要素を出力しました！");
     }
   }
 
@@ -646,7 +648,7 @@ class Main{
         System.out.println(s.pop());
       }
     } catch (NoSuchElementException e) {
-      System.out.println("すべての要素を取得しました！");
+      System.out.println("すべての要素を出力しました！");
     }
   }
 
@@ -657,43 +659,34 @@ class Main{
         System.out.println(d.pop());
       }
     } catch (NoSuchElementException e) {
-      System.out.println("すべての要素を取得しました！");
+      System.out.println("すべての要素を出力しました！");
     }
   }
 
-  // public static void AbstractListIntegerPrint(AbstractListInteger a){
-  //   try {
-  //     while (true) {
-  //       System.out.println(a.get(0));
-  //       a.removeAt(0);
-  //     }
-  //   } catch (NoSuchElementException e) {
-  //     System.out.println("すべての要素を取得しました！");
-  //   }
-  // }
+  public static void AbstractListIntegerPrint(AbstractListInteger a){
+    try {
+      while (true) {
+        System.out.println(a.get(0));
+        a.removeAt(0);
+      }
+    } catch (NoSuchElementException e) {
+      System.out.println("すべての要素を出力しました！");
+    }
+  }
 
   public static void main(String[] args){
-
-    
     try {
-      
-      IntegerArrayList arrayList = new IntegerArrayList(new int[]{1,2,3,4,5});
-      arrayList.removeAllAt(1, 3);
-      System.out.println(arrayList.get(0));
-
-      // ---------- removeAllAtのリファクタリングから始める!! --------------
-      
-      // Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
-      // Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
-      // Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
-      // IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
-      // IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
+      Stack stackList = new IntegerLinkedList(new int[]{1,2,3});
+      Queue queueList = new IntegerLinkedList(new int[]{1,2,3});
+      Deque dequeList = new IntegerLinkedList(new int[]{1,2,3});
+      IntegerLinkedList linkedList = new IntegerLinkedList(new int[]{1,2,3});
+      IntegerArrayList arraylist = new IntegerArrayList(new int[]{1,2,3});
       
       // QueuePrint(queueList);
       // StackPrint(stackList);
       // DequePrint(dequeList);
       // AbstractListIntegerPrint(linkedList);
-      // AbstractListIntegerPrint(arraylist);
+      AbstractListIntegerPrint(arraylist);
   
       // **動的配列で現状posを変えるようにしているが、posを削除してsizeで管理するように修正する。**
   
