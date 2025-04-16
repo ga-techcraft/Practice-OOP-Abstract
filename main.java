@@ -253,7 +253,7 @@ class IntegerArrayList extends AbstractListInteger{
     
     // end以降のデータをstartから格納する
     if (end != this.size - 1) {
-      for (int i = end + 1; i < this.size - (end + 1); i++) {
+      for (int i = 0; i < this.size - (end + 1); i++) {
         this.data[start + i] = this.data[end + 1 + i];
       }
     }
@@ -678,8 +678,8 @@ class Main{
     try {
       
       IntegerArrayList arrayList = new IntegerArrayList(new int[]{1,2,3,4,5});
-      arrayList.removeAt(2);
-      System.out.println(arrayList.get(2));
+      arrayList.removeAllAt(1, 3);
+      System.out.println(arrayList.get(0));
 
       // ---------- removeAllAtのリファクタリングから始める!! --------------
       
@@ -699,7 +699,8 @@ class Main{
   
       // 学び
       // 抽象クラスとインターフェースに対する理解を深めることができた。
-      // 
+      // ループのiについて、要素の位置を表現したいのか、要素数を表現したいのか意識して使い分けることが大切。0から始めると要素数を表現しやすい。
+      // 途中からはじめる場合は要素数に注意。
 
     } catch (Exception e) {
       System.out.println("例外: " + e.getMessage());
